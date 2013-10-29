@@ -1,8 +1,13 @@
 @import url(http://fonts.googleapis.com/css?family=Asap:700);
 
-.body.successful_build {
+.body.successful_build, .body.status_up {
   background: rgba(120, 190, 40, 0.6) !important;
   border-left: 3px solid #0ca961 !important;
+}
+
+.body.status_down {
+  background: rgba(255, 153, 102, 0.6) !important;
+  border-left: 3px solid #a50b00 !important;
 }
 
 .successful_build a {
@@ -18,7 +23,7 @@
   color: rgba(170, 0, 0, 1.0) !important;
 }
 
-.build, .build .authorName {
+.build, .build .authorName, .body.status_up, .body.status_down {
   color: #fff !important;
 }
 

@@ -308,6 +308,14 @@ if (displayAvatars) {
           message.bodyCell.classList.add("failed_build");
           message.bodyCell.classList.add("build");
         }
+
+        if (message.bodyCell.innerText.indexOf("and current status of up") != -1 &&
+           email === "pruebas@chicisimo.com") {
+          message.bodyCell.classList.add("status_up");
+        } else if (message.bodyCell.innerText.indexOf("and current status of down") != -1 && 
+                   email === "pruebas@chicisimo.com") {
+          message.bodyCell.classList.add("status_down");
+        }
       }
 
       this.chat.layoutmanager.layout();
@@ -328,6 +336,14 @@ if (displayAvatars) {
                    email === "pruebas@chicisimo.com") {
           message.bodyCell.classList.add("failed_build");
           message.bodyCell.classList.add("build");
+        }
+
+        if (message.bodyCell.innerText.indexOf("and current status of up") != -1 &&
+           email === "pruebas@chicisimo.com") {
+          message.bodyCell.classList.add("status_up");
+        } else if (message.bodyCell.innerText.indexOf("and current status of down") != -1 && 
+                   email === "pruebas@chicisimo.com") {
+          message.bodyCell.classList.add("status_down");
         }
       }
 
