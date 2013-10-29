@@ -27,6 +27,8 @@
   color: #fff !important;
 }
 
+
+
 body {
   background-color: white !important; }
 
@@ -110,7 +112,8 @@ tr.propane_alert_match:not(.propane_search) td.body {
 }
 
 tr.propane_alert_match:not(.propane_search) td.body {
-  border-left: 3px solid red !important;
+  background-color: rgba(60, 140, 255, 0.1) !important;
+  border-left: 3px solid rgba(60, 140, 255, 0.1) !important;
 }
 
 tr.propane_alert_match:not(.propane_search) td.body .authorName {
