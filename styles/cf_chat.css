@@ -115,9 +115,9 @@ tr.propane_alert_match:not(.propane_search) td.body {
 }
 
 tr.propane_alert_match:not(.propane_search) td.body .authorName {
-  color: #fff !important;
-  font-weight: normal !important;
-  font-size: 12px !important; }
+  font-family: 'Asap', sans-serif;
+  color: #666 !important;
+  font-size: 14px !important; }
 
 tr.propane_hidden_enterleave {
   display: none !important; }
