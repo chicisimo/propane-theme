@@ -23,7 +23,7 @@
   color: rgba(170, 0, 0, 1.0) !important;
 }
 
-.build, .build .authorName, .body.status_up, .body.status_down {
+.build, .build .authorName, .body.status_up, .body.status_down, .body.status_up .authorName, .body.status_down .authorName {
   color: #fff !important;
 }
 
