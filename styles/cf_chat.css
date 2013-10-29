@@ -5,9 +5,17 @@
   border-left: 3px solid #0ca961 !important;
 }
 
+.successful_build a {
+  color: rgba(100, 170, 20, 1.0) !important;
+}
+
 .failed_build {
   background: rgba(190, 20, 20, 0.6) !important;
   border-left: 3px solid #a50b00 !important;
+}
+
+.failed_build a {
+  color: rgba(170, 0, 0, 1.0) !important;
 }
 
 .build, .build .authorName {
