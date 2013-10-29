@@ -302,9 +302,11 @@ if (displayAvatars) {
         if (message.bodyCell.innerText.indexOf("was successful") != -1 &&
            email === "pruebas@chicisimo.com") {
           message.bodyCell.classList.add("successful_build");
+          message.bodyCell.classList.add("build");
         } else if (message.bodyCell.innerText.indexOf("failed") != -1 && 
                    email === "pruebas@chicisimo.com") {
           message.bodyCell.classList.add("failed_build");
+          message.bodyCell.classList.add("build");
         }
       }
 

@@ -1,13 +1,17 @@
 @import url(http://fonts.googleapis.com/css?family=Asap:700);
 
-td.body.successful_build {
-  background: #3fdc94 !important;
+.successful_build {
+  background: rgba(120, 190, 40, 0.6) !important;
   border-left: 3px solid #0ca961 !important;
 }
 
-td.body.failed_build {
-  background: #f94f44 !important;
+.failed_build {
+  background: rgba(190, 20, 20, 0.6) !important;
   border-left: 3px solid #a50b00 !important;
+}
+
+.build, .build .authorName {
+  color: #fff !important;
 }
 
 body {
