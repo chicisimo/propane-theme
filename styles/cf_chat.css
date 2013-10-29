@@ -105,11 +105,6 @@ div#open_bar {
   display: none !important; }
 
 tr.propane_alert_match:not(.propane_search) td.body {
-  color: #fff !important;
-  background-color: #4183c4 !important;
-}
-
-tr.propane_alert_match:not(.propane_search) td.body {
   background-color: rgba(60, 140, 255, 0.1) !important;
   border-left: 3px solid rgba(60, 140, 255, 0.1) !important;
 }
