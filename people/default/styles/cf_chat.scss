@@ -129,8 +129,9 @@ td.person img {
   height: 40px !important; }
 
 td.body {
+  position: relative;
   border-radius: 3px !important;
-  border-left: 3px solid #333 !important;
+  border-left: 3px solid #eee !important;
   background: #ffff !important;
   border-bottom: 4px solid white !important; }
 
@@ -140,8 +141,10 @@ td.body {
   border-left: none !important; }
 
 .star {
-  float: right !important;
-  margin-top: -20px !important; }
+  position: absolute;
+  bottom: 40%;
+  right: 1%;
+}
 
 .authorName {
   font-family: 'Asap', sans-serif;
