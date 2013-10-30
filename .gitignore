@@ -1,2 +1,4 @@
 hosts
 .sass-cache/
+bin/
+.bundle/
