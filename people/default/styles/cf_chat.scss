@@ -142,8 +142,11 @@ td.body {
 
 .star {
   position: absolute;
-  bottom: 40%;
   right: 1%;
+  top: 0;
+  bottom: 0;
+  margin: auto !important;;
+  float: none !important;
 }
 
 .authorName {
