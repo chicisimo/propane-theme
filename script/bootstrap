@@ -2,13 +2,33 @@
 
 set -e
 
+bundle install
+
 propane=~/Library/Application\ Support/Propane
-bootstrap_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_dir=`cd $(dirname $(dirname $BASH_SOURCE)) && pwd`
+
+if [[ ! -z "$1" ]]; then
+  username="$1"
+else
+  username="default"
+fi
+
+person_dir="$root_dir/people/$username"
+
+if [[ ! -d $person_dir ]]; then
+  echo "That person doesn't exists" && exit 1
+fi
+
+styles=`ls "$person_dir/styles"`
+for style in $styles; do
+  name=`basename "$style" ".scss"`
+  scss "$person_dir/styles/$style" "$root_dir/styles/$name.css"
+done
 
 if [[ ! -d $propane ]]; then echo -n "Hi! You should install and open Propane before running this script :(" && exit; fi
 
 if [[ -d "$propane/styles" ]]; then rm -Rf "$propane/styles"; fi
 if [[ -d "$propane/unsupported" ]]; then rm -Rf "$propane/unsupported"; fi
 
-ln -s "$bootstrap_dir/../styles" "$propane"
-ln -s "$bootstrap_dir/../unsupported" "$propane"
+ln -s "$root_dir/styles" "$propane"
+ln -s "$root_dir/unsupported" "$propane"

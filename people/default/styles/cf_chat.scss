@@ -1,31 +1,24 @@
 @import url(http://fonts.googleapis.com/css?family=Asap:700);
-
 .body.successful_build, .body.status_up {
   background: rgba(120, 190, 40, 0.6) !important;
-  border-left: 3px solid #0ca961 !important;
-}
+  border-left: 3px solid #0ca961 !important; }
 
 .body.status_down {
   background: rgba(255, 153, 102, 0.6) !important;
-  border-left: 3px solid #a50b00 !important;
-}
+  border-left: 3px solid #a50b00 !important; }
 
 .successful_build a {
-  color: rgba(100, 170, 20, 1.0) !important;
-}
+  color: #64aa14 !important; }
 
 .body.failed_build {
   background: rgba(190, 20, 20, 0.6) !important;
-  border-left: 3px solid #a50b00 !important;
-}
+  border-left: 3px solid #a50b00 !important; }
 
 .failed_build a {
-  color: rgba(170, 0, 0, 1.0) !important;
-}
+  color: #aa0000 !important; }
 
 .build, .build .authorName, .body.status_up, .body.status_down, .body.status_up .authorName, .body.status_down .authorName {
-  color: #fff !important;
-}
+  color: #fff !important; }
 
 body {
   background-color: white !important; }
@@ -106,8 +99,7 @@ div#open_bar {
 
 tr.propane_alert_match:not(.propane_search) td.body {
   background-color: rgba(60, 140, 255, 0.1) !important;
-  border-left: 3px solid rgba(60, 140, 255, 0.1) !important;
-}
+  border-left: 3px solid rgba(60, 140, 255, 0.1) !important; }
 
 tr.propane_alert_match:not(.propane_search) td.body .authorName {
   font-family: 'Asap', sans-serif;
@@ -134,8 +126,7 @@ td.person {
 td.person img {
   border-radius: 30px !important;
   width: 40px !important;
-  height: 40px !important;
-}
+  height: 40px !important; }
 
 td.body {
   border-radius: 3px !important;
@@ -175,19 +166,18 @@ table.chat tr.you .body {
 table.chat tr.enter_message td, table.chat tr.kick_message td {
   font-size: 14px !important;
   background: #fff !important;
-  color: #ccc !important;
-}
+  color: #ccc !important; }
 
 table.chat tr.enter_message td.body img,
 table.chat tr.kick_message td.body img {
-  display: none !important;
-}
+  display: none !important; }
 
 table.chat tr.enter_message td.body .authorName,
 table.chat tr.kick_message td.body .authorName {
-  color: #ccc !important;
-}
+  color: #ccc !important; }
 
-form#search_form { display: none ! important; }
+form#search_form {
+  display: none !important; }
 
-div#open_bar { display: none ! important; }
+div#open_bar {
+  display: none !important; }
