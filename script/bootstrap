@@ -5,7 +5,7 @@ set -e
 bundle install
 
 propane=~/Library/Application\ Support/Propane
-root_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+root_dir=`cd $(dirname $(dirname $BASH_SOURCE)) && pwd`
 
 if [[ ! -z "$1" ]]; then
   username="$1"
