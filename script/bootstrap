@@ -5,7 +5,7 @@ set -e
 propane=~/Library/Application\ Support/Propane
 bootstrap_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if [[ ! -d $propane ]]; then echo -n "U moron, first install and open Propane" && exit; fi
+if [[ ! -d $propane ]]; then echo -n "Hi! You should install and open Propane before running this script :(" && exit; fi
 
 if [[ -d "$propane/styles" ]]; then rm -Rf "$propane/styles"; fi
 if [[ -d "$propane/unsupported" ]]; then rm -Rf "$propane/unsupported"; fi
