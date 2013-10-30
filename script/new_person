@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+root_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+person_dir="$root_dir/people/$1"
+
+if [[ -z "$1" ]]; then
+  echo "Usage: new_person <name>"
+  exit
+fi
+
+if [[ -d $person_dir ]]; then
+  echo "A person with that name already exists"
+  exit
+fi
+
+mkdir -p "$person_dir"/{styles,scripts}
+
+styles=`ls "$root_dir/people/default/styles/"`
+for style in $styles; do
+  style=`basename "$style" ".scss"`
+  echo "@import \"../../default/styles/$style\";" > "$person_dir/styles/$style.scss"
+done
+
