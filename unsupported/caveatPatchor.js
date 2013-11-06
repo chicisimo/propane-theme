@@ -209,7 +209,7 @@ if (displayAvatars) {
       email = author.getAttribute('data-email');
       if (email) {
         var hash = calcMD5(email.trim().toLowerCase());
-        avatar = "http://gravatar.com/avatar/"+hash;
+        avatar = "https://secure.gravatar.com/avatar/"+hash;
       } else {
         // avatar = author.getAttribute('data-avatar') || 'http://asset1.37img.com/global/missing/avatar.png?r=3';
         avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + this.authorID() + '?default=http://github.com/images/gravatars/gravatar-140.png';
@@ -359,6 +359,52 @@ if (displayAvatars) {
   window.chat.installPropaneResponder("AvatarMangler", "avatarmangler");
   window.chat.installPropaneResponder("Walle", "walle");
 }
+
+Campfire.GitHubIssueExpander = Class.create({
+  initialize: function(chat) {
+    this.chat = chat;
+
+    var messages = this.chat.transcript.messages;
+    for (var i = 0; i < messages.length; i++) {
+      var message = messages[i];
+      this.expandIssue(message);
+    }
+
+    this.chat.layoutmanager.layout();
+    this.chat.windowmanager.scrollToBottom();
+  },
+
+  onMessagesInsertedBeforeDisplay: function(messages) {
+    var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
+
+    for (var i = 0; i < messages.length; i++) {
+      var message = messages[i];
+      this.expandIssue(message);
+    }
+
+    if (scrolledToBottom) {
+      this.chat.windowmanager.scrollToBottom();
+    }
+  },
+  expandIssue: function(message) {
+    if (message.kind !== "text") return;
+    console.log(message.bodyElement().innerText);
+    var regex = /\b(?:([\w-]+?)\/)?([\w-]+?)#(\d+?)\b/gi;
+    var messageHTML = message.bodyElement().innerHTML;
+    if (messageHTML.match(regex)) {
+      console.log("replacing");
+      message.bodyElement().innerHTML =  messageHTML.replace(regex, function(all, user, repo, number) {
+        var url = "https://github.com/" + (user || 'chicisimo') + '/' + repo + '/issues/' + number;
+        return '<a target="_blank" href="' + url + '">' + all + '</a>';
+      });
+      console.log(message.bodyElement().innerHTML);
+      console.log(message.bodyElement().innerHTML);
+    }
+ }
+});
+
+Campfire.Responders.push("GitHubIssueExpander");
+window.chat.installPropaneResponder("GitHubIssueExpander", "githubissueexpander");
 
 
 Campfire.Transcript.messageTemplates = {
