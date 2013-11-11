@@ -169,17 +169,21 @@ table.chat tr.you .body {
   border-radius: 3px !important;
   color: #333 !important; }
 
-table.chat tr.enter_message td, table.chat tr.kick_message td {
+table.chat tr.enter_message td,
+table.chat tr.kick_message td,
+table.chat tr.leave_message td {
   font-size: 14px !important;
   background: #fff !important;
   color: #ccc !important; }
 
 table.chat tr.enter_message td.body img,
-table.chat tr.kick_message td.body img {
+table.chat tr.kick_message td.body img,
+table.chat tr.leave_message td.body img {
   display: none !important; }
 
 table.chat tr.enter_message td.body .authorName,
-table.chat tr.kick_message td.body .authorName {
+table.chat tr.kick_message td.body .authorName,
+table.chat tr.leave_message td.body .authorName, {
   color: #ccc !important; }
 
 form#search_form {
