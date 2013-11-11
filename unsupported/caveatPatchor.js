@@ -361,6 +361,52 @@ if (displayAvatars) {
 }
 
 
+Campfire.SoundPlayer = Class.create({
+  initialize: function(chat) {
+    this.chat = chat;
+
+    this.chat.layoutmanager.layout();
+    this.chat.windowmanager.scrollToBottom();
+  },
+
+  onMessagesInsertedBeforeDisplay: function(messages) {
+    var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
+
+    for (var i = 0; i < messages.length; i++) {
+      var message = messages[i];
+      this.expandAudio(message);
+    }
+
+    if (scrolledToBottom) {
+      this.chat.windowmanager.scrollToBottom();
+    }
+  },
+  expandAudio: function(message) {
+    if (message.kind !== "text") return;
+    var regex = /^\/playme (.+)$/gi;
+    var messageHTML = message.bodyElement().innerHTML;
+    var audio = null;
+    if (messageHTML.match(regex)) {
+      if (document.getElementById('audio-player')) {
+        audio = document.getElementById('audio-player');
+        audio.parentNode.removeChild(audio);
+      }
+      var sourceLink = message.bodyElement().select('a')[0].href;
+      audio = document.createElement('audio');
+      var source = document.createElement('source');
+      source.src = sourceLink;
+      audio.id = 'audio-player';
+      audio.autoplay = true;
+      audio.controls = true;
+      audio.appendChild(source);
+      document.body.insertBefore(audio);
+    }
+  }
+});
+
+Campfire.Responders.push("SoundPlayer");
+window.chat.installPropaneResponder("SoundPlayer", "soundplayer");
+
 Campfire.Transcript.messageTemplates = {
   text_message: new Template("<tr class=\"message text_message\" id=\"message_#{id}\"><td class=\"person\"><span class=\"author\" data-avatar=\"#{avatar}\" data-email=\"#{email_address}\" data-name=\"#{name}\">#{name}</span></td>\n  <td class=\"body\">\n    <div class=\"body\">#{body}</div>\n    \n  <span class=\"star \">\n    <a href=\"#\" onclick=\"chat.starmanager.toggle(this); return false;\" title=\"Starred lines appear as highlights in the transcript.\"></a>\n  </span>\n\n\n  </td>\n</tr>\n"),
   paste_message: new Template("<tr class=\"message paste_message\" id=\"message_#{id}\"><td class=\"person\"><span class=\"author\" data-avatar=\"#{avatar}\" data-email=\"#{email_address}\" data-name=\"#{name}\">#{name}</span></td>\n  <td class=\"body\">\n <a href=\"/room/#{room_id}/paste/#{id}\" target=\"_blank\">View paste</a> \n<br>   <div class=\"body\"><pre><code>#{body}</code></pre></div>\n    \n  <span class=\"star \">\n    <a href=\"#\" onclick=\"chat.starmanager.toggle(this); return false;\" title=\"Starred lines appear as highlights in the transcript.\"></a>\n  </span>\n\n\n  </td>\n</tr>\n"),
