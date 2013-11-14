@@ -360,6 +360,46 @@ if (displayAvatars) {
   window.chat.installPropaneResponder("Walle", "walle");
 }
 
+Campfire.LinkExpander = Class.create({
+  initialize: function(chat) {
+    this.chat = chat;
+
+    var messages = this.chat.transcript.messages;
+    for (var i = 0; i < messages.length; i++) {
+      this.expandLinks(messages[i]);
+    }
+
+    this.chat.layoutmanager.layout();
+    this.chat.windowmanager.scrollToBottom();
+  },
+
+  onMessagesInsertedBeforeDisplay: function(messages) {
+    var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
+
+    for (var i = 0; i < messages.length; i++) {
+      this.expandLinks(messages[i]);
+    }
+
+    if (scrolledToBottom) {
+      this.chat.windowmanager.scrollToBottom();
+    }
+  },
+  expandLinks: function(message) {
+    if (message.kind !== "text") return;
+    var links = message.bodyElement().select('a');
+    if (links.length > 0) {
+      links.each(function(link) {
+        if (!link.classList.contains('image'))
+          link.textContent = link.href;
+      });
+    }
+  }
+});
+
+/* Here is how to install your responder into the running chat */
+Campfire.Responders.push("LinkExpander");
+window.chat.installPropaneResponder("LinkExpander", "linkexpander");
+
 
 Campfire.Transcript.messageTemplates = {
   text_message: new Template("<tr class=\"message text_message\" id=\"message_#{id}\"><td class=\"person\"><span class=\"author\" data-avatar=\"#{avatar}\" data-email=\"#{email_address}\" data-name=\"#{name}\">#{name}</span></td>\n  <td class=\"body\">\n    <div class=\"body\">#{body}</div>\n    \n  <span class=\"star \">\n    <a href=\"#\" onclick=\"chat.starmanager.toggle(this); return false;\" title=\"Starred lines appear as highlights in the transcript.\"></a>\n  </span>\n\n\n  </td>\n</tr>\n"),
