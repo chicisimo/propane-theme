@@ -8,30 +8,35 @@ Our chic theme
 First, clone the repo:
 
 ```bash
-git clone https://github.com/chicisimo/propane-theme.git <target directory>
-cd <target directory>
+$ git clone https://github.com/chicisimo/propane-theme.git <target directory>
+$ cd <target directory>
 ```
 
-There are 2 ways to deploy the theme to propane.
-
-The first one deploys a default version we all agree more or less:
+Then, run this command to deploy the default theme to Propane (you'll have to reload the room):
 
 ```bash
 $ script/bootstrap
 ```
 
-But also, you can add your own style customizations to
+And you're done!
+
+## Customization
+
+Besides, you can add your own style customizations to
 the default theme and make it more personal
 
 ```bash
 $ script/new_person <your nickname>
-$ script/bootstrap <your nickname>
 ```
 
-The first command creates a folder into `people` with your nickname
+The command above creates a folder into `people` with your nickname
 and creates all the style files that are in the default folder,
 ready to be extended (using scss). Once you have added your customizations,
-run the second command to deploy them to Propane(you'll have to reload the room).
+run this command to deploy them to Propane (you'll have to reload the room):
+
+```bash
+$ script/bootstrap <your nickname>
+```
 
 You will need to run the bootstrap command after each customization to deploy it.
 
@@ -73,4 +78,6 @@ $main-dark: #333;
 $ script/bootstrap juanxo
 ```
 
-Enjoy! :heart:
+Then, share you're theme :metal:
+
+Enjoy hacking!
