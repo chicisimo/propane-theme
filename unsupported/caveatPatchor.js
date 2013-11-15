@@ -1,18 +1,9 @@
-
-window.chat.messageHistory = 800;
-
-/*
- JavaScript implementation of the RSA Data Security, Inc. MD5 Message
- * Digest Algorithm, as defined in RFC 1321.
- * Copyright (C) Paul Johnston 1999 - 2000.
- * Updated by Greg Holt 2000 - 2001.
- * See http://pajhome.org.uk/site/legal.html for details.
- */
-
-/*
- * Convert a 32-bit number to a hex string with ls-byte first
- */
 var hex_chr = "0123456789abcdef";
+var showAuthor, getName, getImage, getAvatar;
+var Chicisimo = {
+  responders: []
+};
+
 function rhex(num)
 {
   str = "";
@@ -22,10 +13,6 @@ function rhex(num)
   return str;
 }
 
-/*
- * Convert a string to a sequence of 16-word blocks, stored as an array.
- * Append padding bits and the length, as described in the MD5 standard.
- */
 function str2blks_MD5(str)
 {
   nblk = ((str.length + 8) >> 6) + 1;
@@ -38,10 +25,6 @@ function str2blks_MD5(str)
   return blks;
 }
 
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
 function add(x, y)
 {
   var lsw = (x & 0xFFFF) + (y & 0xFFFF);
@@ -49,18 +32,11 @@ function add(x, y)
   return (msw << 16) | (lsw & 0xFFFF);
 }
 
-/*
- * Bitwise rotate a 32-bit number to the left
- */
 function rol(num, cnt)
 {
   return (num << cnt) | (num >>> (32 - cnt));
 }
 
-/*
- * These functions implement the basic operation for each round of the
- * algorithm.
- */
 function cmn(q, a, b, x, s, t)
 {
   return add(rol(add(add(a, q), add(x, t)), s), b);
@@ -82,9 +58,6 @@ function ii(a, b, c, d, x, s, t)
   return cmn(c ^ (b | (~d)), a, b, x, s, t);
 }
 
-/*
- * Take a string and return the hex representation of its MD5.
- */
 function calcMD5(str)
 {
   x = str2blks_MD5(str);
@@ -175,231 +148,120 @@ function calcMD5(str)
   }
   return rhex(a) + rhex(b) + rhex(c) + rhex(d);
 }
-/* END MD5 LIB */
 
-// Why isn't this part of JS? Bunk.
-// Yes, this is clever. /deal with it
 function xor(a,b)
 {
   return !a != !b
 }
 
-var displayAvatars = true;
+var USER_ACTIONS = ['enter','leave','kick','conference_created','lock','unlock','topic_change','allow_guests','disallow_guests'];
 
-if (displayAvatars) {
-
-  var USER_ACTIONS = ['enter','leave','kick','conference_created','lock','unlock','topic_change','allow_guests','disallow_guests'];
-
-  Object.extend(Campfire.Message.prototype, {
-    authorID: function() {
-      if (Element.hasClassName(this.element, 'you'))
-        return this.chat.userID;
-
-      var idtext = (this.element.className.match(/\s*user_(\d+)\s*/) || [])[1];
-      return parseInt(idtext, 10) || 0;
-    },
-
-    addAvatar: function() {
-      var
-        author = this.authorElement(),
-        body = this.bodyCell,
-        email,
-        avatar, name, imgSize = 32, img;
-
-      email = author.getAttribute('data-email');
-      if (email) {
-        var hash = calcMD5(email.trim().toLowerCase());
-        avatar = "http://gravatar.com/avatar/"+hash;
-      } else {
-        // avatar = author.getAttribute('data-avatar') || 'http://asset1.37img.com/global/missing/avatar.png?r=3';
-        avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + this.authorID() + '?default=http://github.com/images/gravatars/gravatar-140.png';
-      }
-      name = '<strong class="authorName" style="color:#333;">'+author.textContent+'</strong>';
-
-      if (USER_ACTIONS.include(this.kind)) {
-        imgSize = 16;
-        if ('conference_created' != this.kind)
-          body = body.select('div:first')[0];
-        name += ' ';
-      } else if (this.actsLikeTextMessage()) {
-        name += '<br>';
-      } else {
-        return;
-      }
-
-      img = '<img alt="'+this.author()+'" "title="'+this.author()+'" width="'+imgSize+'" height="'+imgSize+'" align="absmiddle" style="opacity: 1.0; margin: 0px; border-radius:3px;'+'" src="'+avatar+'">';
-
-      if (USER_ACTIONS.include(this.kind)) {
-        name = img + '&nbsp;&nbsp;' + name;
-        img = '';
-      }
-
-      if (author.visible()) {
-        author.hide();
-
-        if (body.select('strong.authorName').length === 0) {
-          body.insert({top: name});
-          if (img)
-            author.insert({after: img});
-        }
-      }
-    }
-  });
-
-  /* if you can wrap rather than rewrite, use swizzle like this: */
-  swizzle(Campfire.Message, {
-    setAuthorVisibilityInRelationTo: function($super, message) {
-      $super(message);
-      this.addAvatar();
-    },
-    authorElement: function($super) {
-      if (USER_ACTIONS.include(this.kind)) {
-        return $super().select('span.author')[0];
-      } else {
-        return $super();
-      }
-    }
-  });
-
-
-  /* defining a new responder is probably the best way to insulate your hacks from Campfire and Propane */
-  Campfire.AvatarMangler = Class.create({
-    initialize: function(chat) {
-      this.chat = chat;
-
-      var messages = this.chat.transcript.messages;
-      for (var i = 0; i < messages.length; i++) {
-        var message = messages[i];
-        message.addAvatar();
-      }
-
-      this.chat.layoutmanager.layout();
-      this.chat.windowmanager.scrollToBottom();
-    },
-
-    onMessagesInserted: function(messages) {
-      var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
-
-      for (var i = 0; i < messages.length; i++) {
-        var message = messages[i];
-        message.addAvatar();
-      }
-
-      if (scrolledToBottom) {
-        this.chat.windowmanager.scrollToBottom();
-      }
-    }
-  });
-
-  Campfire.Walle = Class.create({
-    initialize: function(chat) {
-      this.chat = chat;
-
-      var messages = this.chat.transcript.messages;
-      for (var i = 0; i < messages.length; i++) {
-        var message = messages[i], author = message.authorElement();
-        email = author.getAttribute('data-email');
-        if (message.bodyCell.innerText.indexOf("was successful") != -1 &&
-           email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("successful_build");
-          message.bodyCell.classList.add("build");
-        } else if (message.bodyCell.innerText.indexOf("failed") != -1 && 
-                   email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("failed_build");
-          message.bodyCell.classList.add("build");
-        }
-
-        if (message.bodyCell.innerText.indexOf("and current status of up") != -1 &&
-           email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("status_up");
-        } else if (message.bodyCell.innerText.indexOf("and current status of down") != -1 && 
-                   email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("status_down");
-        }
-      }
-
-      this.chat.layoutmanager.layout();
-      this.chat.windowmanager.scrollToBottom();
-    },
-
-    onMessagesInserted: function(messages) {
-      var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
-
-      for (var i = 0; i < messages.length; i++) {
-        var message = messages[i], author = message.authorElement();
-        email = author.getAttribute('data-email');
-        if (message.bodyCell.innerText.indexOf("was successful") != -1 &&
-           email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("successful_build");
-          message.bodyCell.classList.add("build");
-        } else if (message.bodyCell.innerText.indexOf("failed") != -1 && 
-                   email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("failed_build");
-          message.bodyCell.classList.add("build");
-        }
-
-        if (message.bodyCell.innerText.indexOf("and current status of up") != -1 &&
-           email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("status_up");
-        } else if (message.bodyCell.innerText.indexOf("and current status of down") != -1 && 
-                   email === "pruebas@chicisimo.com") {
-          message.bodyCell.classList.add("status_down");
-        }
-      }
-
-      if (scrolledToBottom) {
-        this.chat.windowmanager.scrollToBottom();
-      }
-    }
-  });
-
-  /* Here is how to install your responder into the running chat */
-  Campfire.Responders.push("AvatarMangler");
-  Campfire.Responders.push("Walle");
-  window.chat.installPropaneResponder("AvatarMangler", "avatarmangler");
-  window.chat.installPropaneResponder("Walle", "walle");
-}
-
-Campfire.LinkExpander = Class.create({
-  initialize: function(chat) {
-    this.chat = chat;
-
-    var messages = this.chat.transcript.messages;
-    for (var i = 0; i < messages.length; i++) {
-      this.expandLinks(messages[i]);
-    }
-
-    this.chat.layoutmanager.layout();
-    this.chat.windowmanager.scrollToBottom();
-  },
-
-  onMessagesInsertedBeforeDisplay: function(messages) {
-    var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
-
-    for (var i = 0; i < messages.length; i++) {
-      this.expandLinks(messages[i]);
-    }
-
-    if (scrolledToBottom) {
-      this.chat.windowmanager.scrollToBottom();
-    }
-  },
-  expandLinks: function(message) {
-    if (message.kind !== "text") return;
-    var links = message.bodyElement().select('a');
-    if (links.length > 0) {
-      links.each(function(link) {
-        if (!link.classList.contains('image'))
-          link.textContent = link.href;
-      });
+swizzle(Campfire.Message, {
+  authorElement: function($super) {
+    if (USER_ACTIONS.include(this.kind)) {
+      return $super().select('span.author')[0];
+    } else {
+      return $super();
     }
   }
 });
 
-/* Here is how to install your responder into the running chat */
-Campfire.Responders.push("LinkExpander");
-window.chat.installPropaneResponder("LinkExpander", "linkexpander");
+Campfire.Chicisimo = Class.create({
+  initialize: function(chat) {
+    chat.transcript.messages.forEach(this.executeResponders);
 
+    chat.layoutmanager.layout();
+
+    chat.windowmanager.scrollToBottom();
+  },
+  onMessagesInserted: function(messages) {
+    var scrolledToBottom = chat.windowmanager.isScrolledToBottom();
+
+    messages.forEach(this.executeResponders);
+
+    if (scrolledToBottom) chat.windowmanager.scrollToBottom();
+  },
+  executeResponders: function(message) {
+    Chicisimo.responders.forEach(function(responder) { responder(message); });
+  }
+});
+
+var avatarResponder = function(message) {
+  var author, body, name, image;
+
+  author = message.authorElement();
+  body = message.bodyCell;
+
+  if (USER_ACTIONS.include(message.kind))
+    body = body.select('div:first')[0];
+
+  if (author.visible())
+    showAuthor(message, body);
+
+  author.hide();
+};
+
+showAuthor = function (message, body) {
+  var name, image;
+
+  name = getAuthorName(message);
+  if (message.actsLikeTextMessage())
+    image = getImage(message);
+
+  body.insert({top: name});
+
+  if (image)
+    message.authorElement().insert({after: image});
+};
+
+getAuthorName = function (message) {
+  var author, separator;
+
+  author = message.authorElement();
+  separator = USER_ACTIONS.include(message.kind) ? '&nbsp;' : '<br>';
+
+  if (message.kind === 'timestamp')
+    return '';
+
+  return '<strong class="authorName">' + author.textContent + '</strong>' + separator;
+};
+
+getImage = function(message) {
+  var avatar, image;
+
+  avatar = getAvatar(message.authorElement());
+
+  if (!avatar)
+    return;
+
+  image = document.createElement('img');
+  image.alt    = message.author();
+  image.title  = message.author();
+  image.width  = 32;
+  image.height = 32;
+  image.align  = 'absmiddle';
+  image.src    = avatar;
+
+  return image.outerHTML;
+};
+
+getAvatar = function (author) {
+  var email, hash, avatar;
+
+  email = author.getAttribute('data-email');
+
+  if (!email)
+    return '';
+
+  hash = calcMD5(email.trim().toLowerCase());
+  avatar = 'https://secure.gravatar.com/avatar/' + hash;
+
+  return avatar;
+};
+
+Chicisimo.responders.push(avatarResponder);
+Campfire.Responders.push("Chicisimo");
+window.chat.installPropaneResponder("Chicisimo", "chicisimo");
 
 Campfire.Transcript.messageTemplates = {
   text_message: new Template("<tr class=\"message text_message\" id=\"message_#{id}\"><td class=\"person\"><span class=\"author\" data-avatar=\"#{avatar}\" data-email=\"#{email_address}\" data-name=\"#{name}\">#{name}</span></td>\n  <td class=\"body\">\n    <div class=\"body\">#{body}</div>\n    \n  <span class=\"star \">\n    <a href=\"#\" onclick=\"chat.starmanager.toggle(this); return false;\" title=\"Starred lines appear as highlights in the transcript.\"></a>\n  </span>\n\n\n  </td>\n</tr>\n"),
