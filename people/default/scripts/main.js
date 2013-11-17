@@ -8,11 +8,10 @@ Campfire.USER_ACTIONS = ['enter','leave','kick','conference_created','lock','unl
 
 swizzle(Campfire.Message, {
   authorElement: function($super) {
-    if (Campfire.USER_ACTIONS.include(this.kind)) {
+    if (Campfire.USER_ACTIONS.include(this.kind))
       return $super().select('span.author')[0];
-    } else {
-      return $super();
-    }
+
+    return $super();
   }
 });
 
