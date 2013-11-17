@@ -2,6 +2,8 @@
 
 set -e
 
+export PATH="$PATH:./node_modules/.bin"
+
 if [[ ! `gem list bundler -i` = true ]]; then
   gem install bundler
 fi
