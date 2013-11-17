@@ -23,3 +23,4 @@ for style in $styles; do
   echo "@import \"../../default/styles/$style\";" > "$person_dir/styles/$style.scss"
 done
 
+echo "require ('../../default/scripts/main');" > "$person_dir/scripts/main.js"

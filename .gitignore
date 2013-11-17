@@ -3,3 +3,4 @@ hosts
 /styles/*
 bin/
 .bundle/
+node_modules/
