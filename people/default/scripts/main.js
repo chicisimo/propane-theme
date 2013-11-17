@@ -1,7 +1,7 @@
 var avatarResponder = require('./avatar_responder');
 require('./message_templates');
 var Chicisimo = {
-  responders: []
+  Responders: []
 };
 
 Campfire.USER_ACTIONS = ['enter','leave','kick','conference_created','lock','unlock','topic_change','allow_guests','disallow_guests'];
@@ -31,11 +31,11 @@ Campfire.Chicisimo = Class.create({
     if (scrolledToBottom) chat.windowmanager.scrollToBottom();
   },
   executeResponders: function(message) {
-    Chicisimo.responders.forEach(function(responder) { responder(message); });
+    Chicisimo.Responders.forEach(function(responder) { responder(message); });
   }
 });
 
-Chicisimo.responders.push(avatarResponder);
+Chicisimo.Responders.push(avatarResponder);
 Campfire.Responders.push("Chicisimo");
 window.chat.installPropaneResponder("Chicisimo", "chicisimo");
 
