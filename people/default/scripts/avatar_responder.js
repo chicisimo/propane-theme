@@ -1,6 +1,12 @@
-var calcMD5 = require('./md5');
+var calcMD5 = require('./md5'),
+    avatarResponder,
+    getMessageWrapperElement,
+    showAuthor,
+    getAuthorName,
+    getImage,
+    getAvatar;
 
-var avatarResponder = function(message) {
+avatarResponder = function(message) {
   var author, body;
 
   author = message.authorElement();
@@ -12,26 +18,26 @@ var avatarResponder = function(message) {
   author.hide();
 };
 
-var getMessageWrapperElement = function(message) {
+getMessageWrapperElement = function(message) {
   var body = message.bodyCell;
-  console.log(Campfire.USER_ACTIONS);
+
   return Campfire.USER_ACTIONS.include(message.kind) ?
     body.select('div:first')[0] : body;
 };
 
-var showAuthor = function (message, body) {
-  var name, image;
+showAuthor = function (message, body) {
+  var image, name;
 
-  name = getAuthorName(message);
   if (message.actsLikeTextMessage()) {
     image = getImage(message);
     message.authorElement().insert({after: image});
   }
 
+  name = getAuthorName(message);
   body.insert({top: name});
 };
 
-var getAuthorName = function (message) {
+getAuthorName = function (message) {
   var author, separator;
 
   author = message.authorElement();
@@ -43,7 +49,7 @@ var getAuthorName = function (message) {
   return '<strong class="authorName">' + author.textContent + '</strong>' + separator;
 };
 
-var getImage = function(message) {
+getImage = function(message) {
   var avatar, image;
 
   avatar = getAvatar(message.authorElement());
@@ -62,7 +68,7 @@ var getImage = function(message) {
   return image.outerHTML;
 };
 
-var getAvatar = function (author) {
+getAvatar = function (author) {
   var email, hash, avatar;
 
   email = author.getAttribute('data-email');
