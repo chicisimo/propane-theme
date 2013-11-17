@@ -15,7 +15,7 @@ avatarResponder = function(message) {
   if (author.visible())
     showAuthor(message, body);
 
-  author.hide();
+  author.remove();
 };
 
 getMessageWrapperElement = function(message) {
