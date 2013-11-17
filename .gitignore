@@ -4,3 +4,4 @@ hosts
 bin/
 .bundle/
 node_modules/
+unsupported/caveatPatchor.js
