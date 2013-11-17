@@ -1,5 +1,5 @@
 var hex_chr = "0123456789abcdef";
-var showAuthor, getName, getImage, getAvatar;
+var showAuthor, getName, getImage, getAvatar, getMessageWrapperElement;
 var Chicisimo = {
   responders: []
 };
@@ -187,13 +187,10 @@ Campfire.Chicisimo = Class.create({
 });
 
 var avatarResponder = function(message) {
-  var author, body, name, image;
+  var author, body;
 
   author = message.authorElement();
-  body = message.bodyCell;
-
-  if (USER_ACTIONS.include(message.kind))
-    body = body.select('div:first')[0];
+  body = getMessageWrapperElement(message);
 
   if (author.visible())
     showAuthor(message, body);
@@ -201,17 +198,22 @@ var avatarResponder = function(message) {
   author.hide();
 };
 
+getMessageWrapperElement = function(message) {
+  var body = message.bodyCell;
+  return USER_ACTIONS.include(message.kind) ?
+    body.select('div:first')[0] : body;
+};
+
 showAuthor = function (message, body) {
   var name, image;
 
   name = getAuthorName(message);
-  if (message.actsLikeTextMessage())
+  if (message.actsLikeTextMessage()) {
     image = getImage(message);
+    message.authorElement().insert({after: image});
+  }
 
   body.insert({top: name});
-
-  if (image)
-    message.authorElement().insert({after: image});
 };
 
 getAuthorName = function (message) {
