@@ -4,6 +4,18 @@ set -e
 
 export PATH="$PATH:./node_modules/.bin"
 
+if [[ ! -x `which gem` ]]; then
+  echo "You should install gem before running this script\n"
+  echo "Go to: http://rubygems.org/pages/download"
+  exit 1
+fi
+
+if [[ ! -x `which node` ]]; then
+  echo "You should install node before running this script\n"
+  echo "Go to: http://nodejs.org/download"
+  exit 1
+fi
+
 if [[ ! `gem list bundler -i` = true ]]; then
   gem install bundler
 fi
