@@ -1,7 +1,7 @@
 Propane Theme
 =============
 
-Our chic theme
+one does not simply like Campfire's UI
 
 ## Setup
 
