@@ -2,10 +2,28 @@
 
 set -e
 
+export PATH="$PATH:./node_modules/.bin"
+
+if [[ ! -x `which gem` ]]; then
+  echo "You should install gem before running this script\n"
+  echo "Go to: http://rubygems.org/pages/download"
+  exit 1
+fi
+
+if [[ ! -x `which node` ]]; then
+  echo "You should install node before running this script\n"
+  echo "Go to: http://nodejs.org/download"
+  exit 1
+fi
+
 if [[ ! `gem list bundler -i` = true ]]; then
   gem install bundler
 fi
 bundle install
+
+if [[ -z `npm ls --parseable browserify` ]]; then
+  npm install browserify
+fi
 
 propane=~/Library/Application\ Support/Propane
 root_dir=`cd $(dirname $(dirname $BASH_SOURCE)) && pwd`
@@ -27,6 +45,8 @@ for style in $styles; do
   name=`basename "$style" ".scss"`
   scss "$person_dir/styles/$style" "$root_dir/styles/$name.css"
 done
+
+browserify "$person_dir/scripts/main.js" > "$root_dir/unsupported/caveatPatchor.js"
 
 if [[ ! -d $propane ]]; then echo -n "Hi! You should install and open Propane before running this script :(" && exit; fi
 

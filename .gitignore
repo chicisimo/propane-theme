@@ -3,3 +3,5 @@ hosts
 /styles/*
 bin/
 .bundle/
+node_modules/
+unsupported/caveatPatchor.js
