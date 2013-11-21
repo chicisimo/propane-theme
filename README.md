@@ -78,6 +78,6 @@ $main-dark: #333;
 $ script/bootstrap juanxo
 ```
 
-Then, share you're theme :metal:
+Then, share your theme :metal:
 
 Enjoy hacking!
