@@ -50,7 +50,7 @@ for style in $styles; do
   scss "$person_dir/styles/$style" "$root_dir/styles/$name.css"
 done
 
-browserify -t coffeeify --extension=coffee "$person_dir/scripts/main.js" > "$root_dir/unsupported/caveatPatchor.js"
+browserify -t coffeeify --extension=".coffee" "$person_dir/scripts/main.coffee" > "$root_dir/unsupported/caveatPatchor.js"
 
 if [[ ! -d $propane ]]; then echo -n "Hi! You should install and open Propane before running this script :(" && exit; fi
 
