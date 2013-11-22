@@ -14,6 +14,8 @@ $ cd <target directory>
 
 Then, run this command to deploy the default theme to Propane (you'll have to reload the room):
 
+**WARNING**: This command will remove your current propane files, so backup them if you will.
+
 ```bash
 $ script/bootstrap
 ```
