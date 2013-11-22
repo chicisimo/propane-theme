@@ -1,0 +1,34 @@
+{
+  "name": "propane-theme",
+  "version": "0.0.1",
+  "author": "Chicisimo",
+  "description": "Propane Theme",
+  "main": "unsupported/caveatPatchor.js",
+  "contributors": [
+    {
+      "name": "Juan Guerrero",
+      "email": "juan.guerrero.lozano@gmail.com"
+    },
+    {
+      "name": "Pedro Giménez",
+      "email": "pedro@pedrogimenez.me"
+    }
+
+  ],
+  "dependencies": {
+    "browserify": "~2.35.4",
+    "coffeeify": "~0.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chicisimo/propane-theme.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chicisimo/propane-theme/issues"
+  }
+}
