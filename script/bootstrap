@@ -2,28 +2,32 @@
 
 set -e
 
-export PATH="$PATH:./node_modules/.bin"
+PATH="$PATH:./node_modules/.bin"
 
 if [[ ! -x `which gem` ]]; then
-  echo "You should install gem before running this script\n"
+  echo "You must install gem before running this script\n"
   echo "Go to: http://rubygems.org/pages/download"
   exit 1
 fi
 
 if [[ ! -x `which node` ]]; then
-  echo "You should install node before running this script\n"
+  echo "You must install node before running this script\n"
   echo "Go to: http://nodejs.org/download"
+  exit 1
+fi
+
+if [[ ! -x `which npm` ]]; then
+  echo "You must install npm before running this script\n"
+  echo "Run this on your terminal: curl https://npmjs.org/install.sh | sh"
   exit 1
 fi
 
 if [[ ! `gem list bundler -i` = true ]]; then
   gem install bundler
 fi
-bundle install
 
-if [[ -z `npm ls --parseable browserify` ]]; then
-  npm install browserify
-fi
+bundle install
+npm install
 
 propane=~/Library/Application\ Support/Propane
 root_dir=`cd $(dirname $(dirname $BASH_SOURCE)) && pwd`
@@ -46,7 +50,7 @@ for style in $styles; do
   scss "$person_dir/styles/$style" "$root_dir/styles/$name.css"
 done
 
-browserify "$person_dir/scripts/main.js" > "$root_dir/unsupported/caveatPatchor.js"
+browserify -t coffeeify --extension=coffee "$person_dir/scripts/main.js" > "$root_dir/unsupported/caveatPatchor.js"
 
 if [[ ! -d $propane ]]; then echo -n "Hi! You should install and open Propane before running this script :(" && exit; fi
 
