@@ -12,7 +12,7 @@ swizzle(Campfire.Message, {
     $super()
 })
 
-Campfire.Chicisimo = Class.create({
+Campfire.Chicisimo = Class.create(
   initialize: (chat) ->
     chat.transcript.messages.forEach(this.executeResponders)
 
@@ -26,10 +26,9 @@ Campfire.Chicisimo = Class.create({
 
     chat.windowmanager.scrollToBottom() if scrolledToBottom
   ,executeResponders: (message) ->
-    Chicisimo.Responders.forEach((responder) -> responder(message) )
-})
+    Chicisimo.Responders.forEach((responder) -> responder(message))
+)
 
 Chicisimo.Responders.push(avatarResponder)
 Campfire.Responders.push("Chicisimo")
 window.chat.installPropaneResponder("Chicisimo", "chicisimo")
-
