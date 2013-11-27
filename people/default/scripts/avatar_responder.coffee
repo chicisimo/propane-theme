@@ -2,35 +2,19 @@ calcMD5 = require('./md5')
 
 avatarResponder = (message) ->
   author = message.authorElement()
-  body = getMessageWrapperElement(message)
+  showAuthor(message) unless previousMessageBy(author)
+  removeCampfireDefaultAuthorElement(author)
 
-  if author.visible()
-    showAuthor(message, body)
+previousMessageBy = (author) ->
+  !author.visible()
 
-  author.remove()
+showAuthor = (message) ->
+  showAuthorAvatar(message) if message.actsLikeTextMessage()
+  showAuthorName(message)
 
-getMessageWrapperElement = (message) ->
-  body = message.bodyCell
-
-  if Campfire.USER_ACTIONS.include(message.kind)
-    body.select('div:first')[0]
-  else body
-
-showAuthor = (message, body) ->
-  if message.actsLikeTextMessage()
-    image = getImage(message)
-    message.authorElement().insert({after: image})
-
-  name = getAuthorName(message)
-  body.insert({top: name})
-
-getAuthorName = (message) ->
-  author = message.authorElement()
-  separator = if Campfire.USER_ACTIONS.include(message.kind) then '&nbsp' else '<br>'
-
-  return '' if message.kind == 'timestamp'
-
-  "<strong class=\"authorName\">#{author.textContent}</strong>#{separator}"
+showAuthorAvatar = (message) ->
+  image = getImage(message)
+  message.authorElement().insert({after: image})
 
 getImage = (message) ->
   avatar = getAvatar(message.authorElement())
@@ -54,5 +38,26 @@ getAvatar = (author) ->
 
   hash = calcMD5(email.trim().toLowerCase())
   "https://secure.gravatar.com/avatar/#{hash}"
+
+showAuthorName = (message) ->
+  messageElement(message).insert({top: getAuthorName(message)})
+
+getAuthorName = (message) ->
+  author = message.authorElement()
+  separator = if Campfire.USER_ACTIONS.include(message.kind) then '&nbsp' else '<br>'
+
+  return '' if message.kind == 'timestamp'
+
+  "<strong class=\"authorName\">#{author.textContent}</strong>#{separator}"
+
+messageElement = (message) ->
+  body = message.bodyCell
+  if Campfire.USER_ACTIONS.include(message.kind)
+    body.select('div:first')[0]
+  else
+    body
+
+removeCampfireDefaultAuthorElement = (author) ->
+  author.remove()
 
 module.exports = avatarResponder
