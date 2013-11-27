@@ -1,4 +1,4 @@
-Campfire.Transcript.messageTemplates =
+module.exports =
   text_message: new Template("""
     <tr class="message text_message" id="message_\#{id}">
       <td class="person">

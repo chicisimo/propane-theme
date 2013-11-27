@@ -1,5 +1,6 @@
 avatarResponder = require('./avatar_responder')
-require('./message_templates')
+Campfire.Transcript.messageTemplates = require('./message_templates')
+
 window.Chicisimo =
   Responders: []
 
