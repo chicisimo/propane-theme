@@ -132,7 +132,7 @@ td.body {
   position: relative;
   border-radius: 3px !important;
   border-left: 3px solid #eee !important;
-  background: #ffff !important;
+  background: #fff !important;
   border-bottom: 4px solid white !important; }
 
 .time {
@@ -165,9 +165,11 @@ tr {
   background: white !important; }
 
 table.chat tr.you .body {
-  background: #ffc !important;
+  background: #fff !important;
   border-radius: 3px !important;
-  color: #333 !important; }
+  color: #333 !important;
+  border-left-color: #c7c0de !important;
+}
 
 table.chat tr.enter_message td,
 table.chat tr.kick_message td,
