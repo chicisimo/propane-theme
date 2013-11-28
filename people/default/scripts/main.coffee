@@ -1,4 +1,5 @@
 avatarResponder = require('./avatar_responder')
+messageColorResponder = require('./message_color_responder')
 Campfire.Transcript.messageTemplates = require('./message_templates')
 
 window.Chicisimo =
@@ -30,5 +31,6 @@ Campfire.Chicisimo = Class.create(
 )
 
 Chicisimo.Responders.push(avatarResponder)
+Chicisimo.Responders.push(messageColorResponder)
 Campfire.Responders.push("Chicisimo")
 window.chat.installPropaneResponder("Chicisimo", "chicisimo")
