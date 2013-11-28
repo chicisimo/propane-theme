@@ -176,7 +176,10 @@ table.chat tr.kick_message td,
 table.chat tr.leave_message td {
   font-size: 14px !important;
   background: #fff !important;
-  color: #ccc !important; }
+  color: #ccc !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
 
 table.chat tr.enter_message td.body img,
 table.chat tr.kick_message td.body img,
